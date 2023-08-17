@@ -1,0 +1,351 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+	\usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+	\usecolortheme{default} % or try albatross, beaver, crane, ...
+	\usefonttheme{default}  % or try serif, structurebold, ...
+	\setbeamertemplate{navigation symbols}{}
+	\setbeamertemplate{caption}[numbered]
+	\setbeamertemplate{footline}[frame number]
+} 
+
+% \usepackage{kotex} 
+
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+\newenvironment{rcases}
+{\left.\begin{aligned}}
+	{\end{aligned}\right\rbrace}
+
+
+\usepackage{color}
+\pagecolor{yellow}
+\title{ {\Large \bf Regression Analysis II }  }  
+\subtitle{Chapter 6. Transformation of the Linear Regression Model}
+\author{Hojin Yang}
+\institute{Department of Statistics\\ Pusan National University}
+\date{}
+
+
+
+\begin{document}
+	\scriptsize
+	
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	% Uncomment these lines for an automatically generated outline.
+	%\begin{frame}{Outline}
+	%  \ofcontents
+	%\end{frame}
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		\textbf{6.1.1 One dummy variable case} \\
+		\vspace{1em}
+		(1) Motivating example \\
+		\vspace{0.5em}
+		Problem : A company makes advertisements either in the newspaper or the broadcast. \\
+		\vspace{0.5em}
+		They want to see the difference in the advertisement effect between the newspaper \\
+		\vspace{0.5em}
+		and the broadcast. \\
+		\vspace{0.5em}
+		Solution : Let
+		\\
+		$$
+		Z =
+		\begin{cases}
+			1, & \mbox{if newspaper} \\
+			0, & \mbox{if broadcast}
+		\end{cases}
+		$$
+		and consider
+		$$
+		Y = \beta_0 + \beta_1X + \beta_2Z + \varepsilon,
+		$$
+		\\
+		where $Z$ is called \emph{dummy variable(indicator variable)}. Hence,
+		$$ \begin{aligned}
+			& Z = 0 : E[Y] = \beta_0 + \beta_1X \\
+			& Z = 1 : E[Y] = (\beta_0 + \beta_2) + \beta_1X
+		\end{aligned}
+		$$
+		\\
+		Test : $H_0 : \beta_2$ = 0 
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		\textbf{Remark} \\
+		\vspace{0.5em}
+		If a categorical variable has $c$ categories, then we must have $c-1$ dummy variables. \\
+		\vspace{0.5em}
+		For example, in this problem, we have two categories, so that we need 1( = $2-1$) \\  
+		\vspace{0.5em}
+		dummy variable. Now, assume that we defined two dummy variables in this example, \\
+		\vspace{0.5em}
+		i.e., 
+		\\
+		$$ 
+		Z_1  =
+		\begin{cases}
+			1, & \mbox{if newspaper} \\
+			0, & \mbox{if otherwise}
+		\end{cases} 
+		, \; Z_2  =
+		\begin{cases}
+			1, & \mbox{if broadcast} \\
+			0, & \mbox{if otherwise}
+		\end{cases} 
+		$$
+		\\
+		Then, the corresponding model would be
+		\\
+		$$
+		Y = \beta_0 + \beta_1X + \beta_2Z_1 + \beta_3Z_2 + \varepsilon
+		$$
+		\\
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		then the design matrix might be, for example,
+		$$
+		\textbf{X} = 
+		\begin{bmatrix}
+			1 & X_1 & 1 & 0 \\
+			1 & X_2 & 1 & 0 \\
+			1 & X_3 & 1 & 0 \\
+			1 & X_4 & 1 & 0 \\
+			1 & X_5 & 1 & 0 \\
+			1 & X_6 & 0 & 1 \\
+			1 & X_7 & 0 & 1 \\
+			1 & X_8 & 0 & 1 \\
+			1 & X_9 & 0 & 1 \\
+			1 & X_{10} & 0 & 1 \\
+		\end{bmatrix}
+		$$
+		which is not a full rank matrix because the sum of the 3rd and 4th columns become the \\
+		\vspace{0.5em}
+		1st column. Therefore, $\textbf{X}'\textbf{X}$ is not invertible.
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		(2) Example \\
+		\vspace{0.5em}
+		We have 4 types of seed ; A, B, C, and D, and want to see the difference in products between seeds. Since this categorical variable has 4 categories, we must define 3( = $4-1$) dummy variables. Hence, define
+		$$
+		Z_1  =
+		\begin{cases}
+			1, & \mbox{if A} \\
+			0, & \mbox{if otherwise}
+		\end{cases} 
+		, \; Z_2  =
+		\begin{cases}
+			1, & \mbox{if B} \\
+			0, & \mbox{if otherwise}
+		\end{cases} 
+		, \; Z_3  =
+		\begin{cases}
+			1, & \mbox{if C} \\
+			0, & \mbox{if otherwise}
+		\end{cases} 
+		$$
+		Note that seed D is given when $Z_1$ = $Z_2$ = $Z_3$ = 0. Hence, the model becomes
+		$$
+		Y = \beta_0 + \beta_1Z_1 + \beta_2Z_2 + \beta_3Z_3 + \varepsilon
+		$$
+		and the expectation of product of each seed is
+		$$
+		\begin{aligned}
+			& A : E[Y] = \beta_0 + \beta_1 \\
+			& B : E[Y] = \beta_0 + \beta_2 \\
+			& C : E[Y] = \beta_0 + \beta_3 \\
+			& D : E[Y] = \beta_0
+		\end{aligned}
+		$$
+		For example, the difference of products between A and B is $\beta_2 - \beta_1$
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		\textbf{6.1.2 Extension of the use of dummy variables} \\
+		\vspace{1em}
+		(1) Interaction term \\
+		\vspace{0.5em}
+		If we include the interaction term, then
+		$$
+		Y = \beta_0 + \beta_1X + \beta_2Z + \beta_3XZ + \varepsilon
+		$$
+		so that
+		$$ \begin{aligned}
+			& Z = 0 : E[Y] = \beta_0 + \beta_1X \\
+			& Z = 1 : E[Y] = (\beta_0 + \beta_2) + (\beta_1 + \beta_3)X
+		\end{aligned}
+		$$
+		Here, both the slope and the intercept are different. \\
+		\vspace{1em}
+		(2) Break(change) point \\
+		\vspace{0.5em}
+		If we have a prior information on the change point, for example, 
+		$$
+		Z =
+		\begin{cases}
+			1, & \mbox{X $>$ 20} \\
+			0, & \mbox{X $\leq$ 20}
+		\end{cases}
+		$$
+		
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		then, we can model like
+		\\
+		$$
+		Y = \beta_0 + \beta_1X + \beta_2(X-20)Z + \varepsilon
+		$$
+		\\
+		so that
+		\\
+		$$\begin{aligned}
+			& 1. X \leq 20 : E[Y] = \beta_0 + \beta_1X \\
+			& 2. X > 20 : E[Y] = (\beta_0 - 20\beta_2) + (\beta_1 + \beta_2)X
+		\end{aligned}
+		$$
+		\\
+		\vspace{2em}
+		\textbf{6.1.3 ANOVA using the regression model} \\
+		\vspace{1em}
+		Consider the following one-way ANOVA model
+		$$
+		Y_{ij} = \mu + \alpha_i + \varepsilon_{ij}, \quad i = 1, 2, \cdots , c \; ; \; j = 1, 2, \cdots, n_i,
+		$$
+		where $Y_{ij}$ is the $j$-th response of the $i$-th group, $\mu$ is a overall effect, $\alpha_i$ is the effect of \\
+		\vspace{0.5em}
+		the $i$-th group, $\varepsilon_{ij}$ is error term.
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		 For $c$ = 4, and $n_i$ = 3, we have
+		$$ \begin{aligned}
+			& \boldsymbol{\beta} = (\mu, \alpha_1, \alpha_2, \alpha_3, \alpha_4)' \\
+			& \textbf{X} = 
+			\begin{bmatrix}
+				1 & 1 & 0 & 0 & 0 \\
+				1 & 1 & 0 & 0 & 0 \\
+				1 & 1 & 0 & 0 & 0 \\
+				1 & 0 & 1 & 0 & 0 \\
+				1 & 0 & 1 & 0 & 0 \\
+				1 & 0 & 1 & 0 & 0 \\
+				1 & 0 & 0 & 1 & 0 \\
+				1 & 0 & 0 & 1 & 0 \\
+				1 & 0 & 0 & 1 & 0 \\
+				1 & 0 & 0 & 0 & 1 \\
+				1 & 0 & 0 & 0 & 1 \\
+				1 & 0 & 0 & 0 & 1 
+			\end{bmatrix}
+		\end{aligned}
+		$$
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.1 The Use of Dummy Variable}
+		But, $\textbf{X}$ is not a full rank matrix, so that it is not estimable, To overcome this difficulty, \\
+		\vspace{0.5em}
+		use dummy variables. Let
+		\\
+		$$
+		Z_1 =
+		\begin{cases}
+			1, & \mbox{group 1} \\
+			0, & \mbox{otherwise}
+		\end{cases}
+		, \; Z_2 =
+		\begin{cases}
+			1, & \mbox{group 2} \\
+			0, & \mbox{otherwise}
+		\end{cases}	
+		, \; Z_3 = 
+		\begin{cases}
+			1, & \mbox{group 3} \\
+			0, & \mbox{otherwise}
+		\end{cases}
+		$$
+		\\
+		Then,
+		\\
+		$$
+		Y_i = \beta_0 + \beta_1Z_{i1} + \beta_2Z_{i2} + \beta_3Z_{i3} + \varepsilon_i, \quad i = 1, 2, \cdots, 12
+		$$
+		\\
+		Note that the test for $H_0$ : $\alpha_1 = \alpha_2 = \alpha_3 = \alpha_4 = 0$ is equivalent to \\
+		\vspace{0.5em}
+		$H_0$ : $\beta_1 = \beta_2 = \beta_3 = 0$ \\
+		\vspace{2em}
+		Ex. 6.3 (p.242)
+	}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frame{ 
+		\frametitle{6.2 Polynomial Regression}
+		1st order polynomial regression \\
+		\vspace{1.5em}
+		\quad 1 covariate : $Y = \beta_0 + \beta_1X + \varepsilon$ \\
+		\vspace{1em}
+		\quad 2 covariates : $Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \varepsilon$ \\
+		\vspace{1em}
+		\quad $k$ covariates : $Y = \beta_0 + \sum_{i=1}^{k} \beta_iX_i + \varepsilon$ \\
+		\vspace{2.5em}
+		2nd order polynomial regression \\
+		\vspace{1.5em}
+		\quad 1 covariate : $Y = \beta_0 + \beta_1X + \beta_2X^2 + \varepsilon$ \\
+		\vspace{1em}
+		\quad 2 covariates : $Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_{11}X^2_1 + \beta_{22}X^2_2 + \beta_{12}X_1X_2 + \varepsilon$ \\
+		\vspace{1em}
+		\quad $k$ covariates : $Y = \beta_0 + \sum_{i=1}^{k} \beta_iX_i + \sum\beta_{ii}X^2_i + \sum_{i<j}^{k} \beta_{ij}X_iX_j + \varepsilon$
+	}
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
